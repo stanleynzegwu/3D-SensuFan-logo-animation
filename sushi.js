@@ -84,6 +84,12 @@ const scene = new THREE.Scene()
 // )
 
 */
+// Texture loader
+const textureLoader = new THREE.TextureLoader()
+const sensu_fan_material = textureLoader.load('japanese-material.jpg')
+sensu_fan_material.flipY = false
+// sensu_fan_material.encoding = THREE.sRGBEncoding
+
 let Hashi_stick = null
 // let's use draco compression
 const dracoLoader = new DRACOLoader()
@@ -99,7 +105,10 @@ gltfLoader.load('/models/logo3.glb', //Note You can still load not compressed gl
         const Hashi_stick_2 = (gltf.scene.getObjectByName('Hashi_stick_2'))
         const Tokkuri_pitcher = (gltf.scene.getObjectByName('Tokkuri_pitcher'))
         const Sensu_fan = (gltf.scene.getObjectByName('Sensu_fan'))
-console.log(Sensu_fan.material.color = new THREE.Color('blue'))
+        Sensu_fan.material.color = new THREE.Color('blue')
+        // Sensu_fan.material.wireframe = true
+        // Sensu_fan.material.map = sensu_fan_material
+        // console.log(sensu_fan_material)
 
         gsap.to(Tokkuri_pitcher.rotation, {duration:3, delay:1, y:Math.PI * 2})
 
@@ -111,7 +120,6 @@ console.log(Sensu_fan.material.color = new THREE.Color('blue'))
         gsap.to(Hashi_stick_2.rotation, {duration:3, delay:3, z:Math.PI * 0.5})
         gsap.to(Hashi_stick_2.rotation, {duration:2, delay:4, z:0})
 
-        console.log(Hashi_stick_1)
         if(Hashi_stick_1) 
             Hashi_stick = Hashi_stick_1
         scene.add(gltf.scene)
