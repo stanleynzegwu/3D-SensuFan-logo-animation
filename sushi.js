@@ -1,95 +1,229 @@
-// // sushi.js
-// import * as THREE from 'three';
+// import * as THREE from 'three'
+// import gsap from 'gsap'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 // import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+// import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
-// // Select the canvas element
-// const canvas = document.querySelector('canvas.webgl');
+// /**
+//  * Base
+//  */
 
-// // Create a Three.js renderer
-// const renderer = new THREE.WebGLRenderer({ canvas });
+// // Canvas
+// const canvas = document.querySelector('canvas.webgl')
 
-// // Your Three.js code here
-// // Example: create a scene, camera, and renderer
-// const scene = new THREE.Scene();
-// const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-// renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+// Scene
+//const scene = new THREE.Scene()
 
-// // Example: create a cube
-// const geometry = new THREE.BoxGeometry();
-// const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-// const cube = new THREE.Mesh(geometry, material);
-// scene.add(cube);
+// // Texture loader
+// const textureLoader = new THREE.TextureLoader()
+// const sensu_fan_texture = textureLoader.load('/textures/japanese-material.jpeg')
+// // const sensu_fan_texture = textureLoader.load(
+// //     '/textures/japanese-material.jpeg',  // Correct path to your texture
+// //     () => console.log('Texture loaded successfully'),
+// //     undefined,
+// //     (error) => console.error('Error loading texture:', error)
+// // );
+// sensu_fan_texture.flipY = false
+// sensu_fan_texture.encoding = THREE.sRGBEncoding
 
-// camera.position.z = 5;
+// const sensu_fan_material = new THREE.MeshBasicMaterial({map:sensu_fan_texture,transparent: false,opacity: 1,color:'blue'})
 
-// // Example: animate the cube
-// function animate() {
-//     requestAnimationFrame(animate);
+// let Hashi_stick = null
+// // let's use draco compression
+// const dracoLoader = new DRACOLoader()
+// dracoLoader.setDecoderPath('/draco/') //path to /draco/ in static folder was copied from the node_modules, check resources for the Draco Decoder path
 
-//     cube.rotation.x += 0.01;
-//     cube.rotation.y += 0.01;
+// const gltfLoader = new GLTFLoader()
+// gltfLoader.setDRACOLoader(dracoLoader)
 
-//     renderer.render(scene, camera);
+// gltfLoader.load('/models/logo.glb', //Note You can still load not compressed glTF file with the GLTFLoader and the Draco decoder is only loaded when needed. Time: 53:00
+//     (gltf) => {
+//         console.log(gltf)
+//         const Hashi_stick_1 = (gltf.scene.getObjectByName('Hashi_stick_1'))
+//         const Hashi_stick_2 = (gltf.scene.getObjectByName('Hashi_stick_2'))
+//         const Tokkuri_pitcher = (gltf.scene.getObjectByName('Tokkuri_pitcher'))
+//         const Sensu_fan = (gltf.scene.getObjectByName('Sensu_fan'))
+     
+//         // Sensu_fan.material = sensu_fan_material
+//         // console.log(Sensu_fan.material)
+//         Sensu_fan.material.map = sensu_fan_texture
+
+//         gsap.to(Tokkuri_pitcher.rotation, {duration:3, delay:1, y:Math.PI * 2})
+
+//         gsap.to(Hashi_stick_1.rotation, {duration:3, delay:2, z:Math.PI * 0.5})
+//         gsap.to(Hashi_stick_1.rotation, {duration:3, delay:3, z:-Math.PI * 0.5})
+//         gsap.to(Hashi_stick_1.rotation, {duration:2, delay:4, z:0})
+
+//         gsap.to(Hashi_stick_2.rotation, {duration:3, delay:2, z:-Math.PI * 0.5})
+//         gsap.to(Hashi_stick_2.rotation, {duration:3, delay:3, z:Math.PI * 0.5})
+//         gsap.to(Hashi_stick_2.rotation, {duration:2, delay:4, z:0})
+
+//         if(Hashi_stick_1) 
+//             Hashi_stick = Hashi_stick_1
+//         scene.add(gltf.scene)
+//     }
+// )
+
+
+// /**
+//  * Lights
+//  */
+// const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
+// scene.add(ambientLight)
+
+// const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
+// directionalLight.castShadow = true
+// directionalLight.shadow.mapSize.set(1024, 1024)
+// directionalLight.shadow.camera.far = 15
+// directionalLight.shadow.camera.left = - 7
+// directionalLight.shadow.camera.top = 7
+// directionalLight.shadow.camera.right = 7
+// directionalLight.shadow.camera.bottom = - 7
+// directionalLight.position.set(5, 5, 5)
+// scene.add(directionalLight)
+
+// /**
+//  * Sizes
+//  */
+// const sizes = {
+//     width: window.innerWidth,
+//     height: window.innerHeight
 // }
 
-// animate();
+// window.addEventListener('resize', () =>
+// {
+//     // Update sizes
+//     sizes.width = window.innerWidth
+//     sizes.height = window.innerHeight
+
+//     // Update camera
+//     camera.aspect = sizes.width / sizes.height
+//     camera.updateProjectionMatrix()
+
+//     // Update renderer
+//     renderer.setSize(sizes.width, sizes.height)
+//     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+// })
+
+// /**
+//  * Camera
+//  */
+// // Base camera
+// const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+// camera.position.set(0, 1, 2)
+// scene.add(camera)
+
+// // Controls
+// const controls = new OrbitControls(camera, canvas)
+// controls.target.set(0, 0.75, 0)
+// controls.enableDamping = true
+
+// /**
+//  * Renderer
+//  */
+// const renderer = new THREE.WebGLRenderer({
+//     canvas: canvas
+// })
+// renderer.shadowMap.enabled = true
+// renderer.shadowMap.type = THREE.PCFSoftShadowMap
+// renderer.setSize(sizes.width, sizes.height)
+// renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+// /**
+//  * Animate
+//  */
+// const clock = new THREE.Clock()
+// let previousTime = 0
+
+// //Gsap
+
+
+// const tick = () =>
+// {
+//     const elapsedTime = clock.getElapsedTime()
+//     const deltaTime = elapsedTime - previousTime
+//     previousTime = elapsedTime
+//     // if(Hashi_stick)
+//     //     Hashi_stick.position.x = Math.sin(elapsedTime * 0.5)
+//     // Update controls
+//     controls.update()
+
+//     // Render
+//     renderer.render(scene, camera)
+
+//     // Call tick again on the next frame
+//     window.requestAnimationFrame(tick)
+// }
+
+// tick()
+
 
 import * as THREE from 'three'
 import gsap from 'gsap'
+import GUI from 'lil-gui'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
+import slicedVertexShader from './shaders/vertexShader.glsl'
+import slicedFragmentShader from './shaders/fragmentShader.glsl'
 
 /**
  * Base
  */
+// Debug
+// const gui = new GUI({ width: 325 })
+// const debugObject = {}
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
-
 /**
- * Models
+ * Loaders
  */
+const rgbeLoader = new RGBELoader()
+rgbeLoader.load('/textures/city.hdr', (environmentMap) =>
+    {
+        environmentMap.mapping = THREE.EquirectangularReflectionMapping
 
-/** 
-//using glTF(and it works ame way with other formats except Draco..check below for how to use Draco)
+        // scene.background = environmentMap
+        scene.environment = environmentMap
+    })
 
-// const gltfLoader = new GLTFLoader()
-
-// gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf',
-//     (gltf) => {
-//         console.log(gltf)
-//         //while the array still contains a child remove the first 
-//         //because once you add a child it gets removed from the array(that's specific to how it's setup by gltf/threejs)
-
-//         // while(gltf.scene.children.length){
-//         //     scene.add(gltf.scene.children[0])
-//         // }
-
-//         //unpack to a separate independent array that has nothing to do with threejs then loop, 
-//         //this way it doesn't remove it from the array after adding to the scene
-
-//         // const children = [...gltf.scene.children]
-//         // for(const child of children){
-//         //     scene.add(child)
-//         // }
-
-//         scene.add(gltf.scene)
-//     }
-// )
-
-*/
 // Texture loader
 const textureLoader = new THREE.TextureLoader()
-const sensu_fan_material = textureLoader.load('japanese-material.jpg')
-sensu_fan_material.flipY = false
-// sensu_fan_material.encoding = THREE.sRGBEncoding
+const sensu_fan_texture = textureLoader.load('/textures/japanese-material.jpeg')
+sensu_fan_texture.flipY = false
+sensu_fan_texture.encoding = THREE.sRGBEncoding
 
+//Material
+const uniforms = {
+    uSliceStart: new THREE.Uniform(- Math.PI),
+    uSliceArc: new THREE.Uniform(1.8),
+}
+// gui.add(uniforms.uSliceStart, 'value', - Math.PI, Math.PI/6, 0.001).name('uSliceStart')
+// gui.add(uniforms.uSliceArc, 'value', 0, Math.PI * 2, 0.001).name('uSliceArc')
+
+const slicedMaterial = new CustomShaderMaterial({
+    // CSM
+    baseMaterial: THREE.MeshStandardMaterial,
+    vertexShader: slicedVertexShader,
+    fragmentShader: slicedFragmentShader,
+    uniforms: uniforms,
+    silent: true,
+
+    // MeshStandardMaterial
+    map: sensu_fan_texture,
+    metalness: 0.0,
+    roughness: 0.5,
+    envMapIntensity: 0.5,
+    side: THREE.DoubleSide
+
+})
 let Hashi_stick = null
 // let's use draco compression
 const dracoLoader = new DRACOLoader()
@@ -98,47 +232,32 @@ dracoLoader.setDecoderPath('/draco/') //path to /draco/ in static folder was cop
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
 
-gltfLoader.load('/models/logo3.glb', //Note You can still load not compressed glTF file with the GLTFLoader and the Draco decoder is only loaded when needed. Time: 53:00
+gltfLoader.load('/models/logo.glb', //Note You can still load not compressed glTF file with the GLTFLoader and the Draco decoder is only loaded when needed. Time: 53:00
     (gltf) => {
-        console.log(gltf)
         const Hashi_stick_1 = (gltf.scene.getObjectByName('Hashi_stick_1'))
         const Hashi_stick_2 = (gltf.scene.getObjectByName('Hashi_stick_2'))
         const Tokkuri_pitcher = (gltf.scene.getObjectByName('Tokkuri_pitcher'))
         const Sensu_fan = (gltf.scene.getObjectByName('Sensu_fan'))
-        Sensu_fan.material.color = new THREE.Color('blue')
-        // Sensu_fan.material.wireframe = true
-        // Sensu_fan.material.map = sensu_fan_material
-        // console.log(sensu_fan_material)
+        Sensu_fan.material = slicedMaterial
 
-        gsap.to(Tokkuri_pitcher.rotation, {duration:3, delay:1, y:Math.PI * 2})
-
-        gsap.to(Hashi_stick_1.rotation, {duration:3, delay:2, z:Math.PI * 0.5})
-        gsap.to(Hashi_stick_1.rotation, {duration:3, delay:3, z:-Math.PI * 0.5})
-        gsap.to(Hashi_stick_1.rotation, {duration:2, delay:4, z:0})
-
-        gsap.to(Hashi_stick_2.rotation, {duration:3, delay:2, z:-Math.PI * 0.5})
-        gsap.to(Hashi_stick_2.rotation, {duration:3, delay:3, z:Math.PI * 0.5})
-        gsap.to(Hashi_stick_2.rotation, {duration:2, delay:4, z:0})
+        //GSAP
+        const timeline = gsap.timeline();
+        timeline
+        .to(Tokkuri_pitcher.rotation, {duration:6, delay:1, y:Math.PI * 8},'same')
+        .to(Hashi_stick_1.rotation, {duration:3, delay:2, z:Math.PI * 0.5},'same')
+        .to(Hashi_stick_1.rotation, {duration:3, delay:3, z:-Math.PI * 0.5},'same')
+        .to(Hashi_stick_1.rotation, {duration:2, delay:4, z:0},'same')
+        .to(Hashi_stick_2.rotation, {duration:3, delay:2, z:-Math.PI * 0.5},'same')
+        .to(Hashi_stick_2.rotation, {duration:3, delay:3, z:Math.PI * 0.5},'same')
+        .to(Hashi_stick_2.rotation, {duration:2, delay:4, z:0},'same')
+        .to(slicedMaterial.uniforms.uSliceStart, {duration:3, delay:2, value:Math.PI/6,ease: "linear",},'same')
+        .to(slicedMaterial.uniforms.uSliceStart, {duration:4, delay:5, value:- Math.PI,ease: "linear",},'same')
 
         if(Hashi_stick_1) 
             Hashi_stick = Hashi_stick_1
         scene.add(gltf.scene)
     }
 )
-
-//Animated Models
-// const gltfLoader = new GLTFLoader()
-
-
-// gltfLoader.load(
-//     '/models/logo.gltf',
-//     (gltf) =>
-//     {
-//         gltf.scene.scale.set(1, 1, 1)
-//         scene.add(gltf.scene)
-
-//     }
-// )
 
 
 /**
@@ -190,15 +309,16 @@ camera.position.set(0, 1, 2)
 scene.add(camera)
 
 // Controls
-const controls = new OrbitControls(camera, canvas)
-controls.target.set(0, 0.75, 0)
-controls.enableDamping = true
+// const controls = new OrbitControls(camera, canvas)
+// controls.target.set(0, 0.75, 0)
+// controls.enableDamping = true
 
 /**
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+    canvas: canvas,
+    alpha:true
 })
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
@@ -219,10 +339,7 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
-    // if(Hashi_stick)
-    //     Hashi_stick.position.x = Math.sin(elapsedTime * 0.5)
-    // Update controls
-    controls.update()
+    // controls.update()
 
     // Render
     renderer.render(scene, camera)
