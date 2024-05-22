@@ -164,7 +164,6 @@ import gsap from 'gsap'
 import GUI from 'lil-gui'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 import slicedVertexShader from './shaders/vertexShader.glsl'
@@ -186,13 +185,11 @@ const scene = new THREE.Scene()
  * Loaders
  */
 const rgbeLoader = new RGBELoader()
-rgbeLoader.load('/textures/city.hdr', (environmentMap) =>
-    {
-        environmentMap.mapping = THREE.EquirectangularReflectionMapping
-
-        // scene.background = environmentMap
-        scene.environment = environmentMap
-    })
+rgbeLoader.load('/textures/city.hdr', (environmentMap) =>{
+    environmentMap.mapping = THREE.EquirectangularReflectionMapping
+    scene.environment = environmentMap
+    scene.environmentIntensity = 0.5
+})
 
 // Texture loader
 const textureLoader = new THREE.TextureLoader()
@@ -224,20 +221,25 @@ const slicedMaterial = new CustomShaderMaterial({
     side: THREE.DoubleSide
 
 })
-let Hashi_stick = null
-// let's use draco compression
-const dracoLoader = new DRACOLoader()
-dracoLoader.setDecoderPath('/draco/') //path to /draco/ in static folder was copied from the node_modules, check resources for the Draco Decoder path
 
 const gltfLoader = new GLTFLoader()
-gltfLoader.setDRACOLoader(dracoLoader)
-
 gltfLoader.load('/models/logo.glb', //Note You can still load not compressed glTF file with the GLTFLoader and the Draco decoder is only loaded when needed. Time: 53:00
     (gltf) => {
         const Hashi_stick_1 = (gltf.scene.getObjectByName('Hashi_stick_1'))
         const Hashi_stick_2 = (gltf.scene.getObjectByName('Hashi_stick_2'))
         const Tokkuri_pitcher = (gltf.scene.getObjectByName('Tokkuri_pitcher'))
         const Sensu_fan = (gltf.scene.getObjectByName('Sensu_fan'))
+
+        //Shadows
+        Sensu_fan.castShadow = true
+        Sensu_fan.receiveShadow = true
+        Tokkuri_pitcher.castShadow = true
+        Hashi_stick_1.castShadow = true
+        Hashi_stick_1.receiveShadow = true
+        Hashi_stick_2.castShadow = true
+        Hashi_stick_2.receiveShadow = true
+
+        //Material
         Sensu_fan.material = slicedMaterial
 
         //GSAP
@@ -252,9 +254,6 @@ gltfLoader.load('/models/logo.glb', //Note You can still load not compressed glT
         .to(Hashi_stick_2.rotation, {duration:2, delay:4, z:0},'same')
         .to(slicedMaterial.uniforms.uSliceStart, {duration:3, delay:2, value:Math.PI/6,ease: "linear",},'same')
         .to(slicedMaterial.uniforms.uSliceStart, {duration:4, delay:5, value:- Math.PI,ease: "linear",},'same')
-
-        if(Hashi_stick_1) 
-            Hashi_stick = Hashi_stick_1
         scene.add(gltf.scene)
     }
 )
@@ -263,10 +262,10 @@ gltfLoader.load('/models/logo.glb', //Note You can still load not compressed glT
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.2)
 scene.add(ambientLight)
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2)
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
 directionalLight.shadow.camera.far = 15
@@ -276,6 +275,7 @@ directionalLight.shadow.camera.right = 7
 directionalLight.shadow.camera.bottom = - 7
 directionalLight.position.set(5, 5, 5)
 scene.add(directionalLight)
+
 
 /**
  * Sizes
