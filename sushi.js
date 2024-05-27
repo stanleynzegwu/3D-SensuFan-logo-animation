@@ -115,7 +115,7 @@ gltfLoader.load('/models/logo.glb', (gltf) => {
     const timeline = gsap.timeline({
         onComplete: () => {
           // Run opacity animation of exploreBtn
-          gsap.to(exploreBtn, { duration: 2, opacity: 1 });
+          gsap.to(exploreBtn, { duration: .5, opacity: 1 });
         }
     });
     timeline
