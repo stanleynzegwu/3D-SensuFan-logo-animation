@@ -87,7 +87,7 @@ const group = new THREE.Group();
 scene.add(group);
 
 const gltfLoader = new GLTFLoader();
-gltfLoader.load('/models/delete2.glb', (gltf) => {
+gltfLoader.load('/models/logo.glb', (gltf) => {
     const Hashi_stick_1 = gltf.scene.getObjectByName('Hashi_stick_1');
     const Hashi_stick_2 = gltf.scene.getObjectByName('Hashi_stick_2');
     const Tokkuri_pitcher = gltf.scene.getObjectByName('Tokkuri_pitcher');
