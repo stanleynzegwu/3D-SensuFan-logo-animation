@@ -104,14 +104,75 @@ button:focus-visible {
 html,
 body
 {
-    overflow: hidden;
-    background-color: rgb(9, 9, 31);
+  overflow: hidden;
+    /* background-color: #09091f; */
+}
+/* .canvas-div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 50;
+} */
+.webgl {
+  position: fixed;
+  /* position: relative; */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  z-index: 20;
+  opacity: 1;
+  transition: opacity 2s ease;
+}
+.app{
+  width: 100%;
+  /* background-color: brown; */
 }
 
-.webgl
+.app header {
+  height: 100px;
+  font-size: 30px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+#explore-btn {
+  position: absolute;
+  border: none;
+  bottom: 15%;
+  left: 50%;
+  cursor: pointer;
+  background-color: white;
+  transform: translateX(-50%);
+  color: black;
+  z-index: 50;
+  border-radius: 1.5rem;
+  text-transform: capitalize;
+  padding: .5rem 1.5rem;
+  height: 2.9rem;
+  width: 10rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+#explore-btn:hover {
+  background: rgb(218, 214, 214);
+}
+
+.hidden {
+  /* opacity: 0;
+  transition: all 0.5s ease, display 0s 0.5s; */
+  pointer-events: none;
+  /* display: none; */
+}
+/* .webgl
 {
     position: fixed;
     top: 0;
     left: 0;
     outline: none;
-}
+} */
+
