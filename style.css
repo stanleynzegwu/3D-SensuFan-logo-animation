@@ -184,3 +184,33 @@ body
     left: 0;
     outline: none;
 }
+
+#explore-btn {
+  position: fixed;
+  border: none;
+  bottom: 15%;
+  left: 50%;
+  cursor: pointer;
+  background-color: white;
+  transform: translateX(-50%);
+  color: black;
+  z-index: 50;
+  border-radius: 1.5rem;
+  text-transform: capitalize;
+  padding: .5rem 1.5rem;
+  height: 2.9rem;
+  width: 10rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+#explore-btn:hover {
+  background: rgb(218, 214, 214);
+}
+
+.hidden {
+  opacity: 0;
+  transition: all 0.5s ease, display 0s 0.5s;
+  display: none;
+}
+ 
