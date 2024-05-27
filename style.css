@@ -95,7 +95,7 @@ button:focus-visible {
   }
 } */
 
-*
+/* *
 {
     margin: 0;
     padding: 0;
@@ -115,7 +115,6 @@ body
   z-index: 50;
 }
 .webgl {
-  /* position: fixed; */
   position: absolute;
   top: 0;
   left: 0;
@@ -164,4 +163,24 @@ body
   transition: all 0.5s ease, display 0s 0.5s;
   display: none;
 }
+ */
 
+ *
+{
+    margin: 0;
+    padding: 0;
+}
+html,
+body
+{
+    overflow: hidden;
+    background-color: rgb(9, 9, 31);
+}
+
+.webgl
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+}
