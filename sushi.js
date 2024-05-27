@@ -1,3 +1,4 @@
+import './style.css'
 import * as THREE from 'three';
 import GUI from 'lil-gui'
 import gsap from 'gsap';
