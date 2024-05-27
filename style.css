@@ -102,11 +102,7 @@ button:focus-visible {
 }
 
 html,
-body
-{
-  box-sizing: border-box;
-    /* background-color: #09091f; */
-}
+
 /* .canvas-div {
   position: absolute;
   width: 100%;
@@ -116,8 +112,8 @@ body
   z-index: 50;
 } */
 .webgl {
-  position: fixed;
-  /* position: relative; */
+  /* position: fixed; */
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
