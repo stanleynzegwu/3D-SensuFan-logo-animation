@@ -104,6 +104,7 @@ button:focus-visible {
 html,
 body
 {
+  box-sizing: border-box;
     /* background-color: #09091f; */
 }
 /* .canvas-div {
