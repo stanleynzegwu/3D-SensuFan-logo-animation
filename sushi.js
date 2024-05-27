@@ -243,7 +243,7 @@ exploreBtn.addEventListener('click', () => {
       value: 0, /** Target value */
       delay: .2,
       duration: 1.5,
-      ease: "linear",
+      ease: "linear"
     }
   )
 });

@@ -104,7 +104,6 @@ button:focus-visible {
 html,
 body
 {
-  overflow: hidden;
     /* background-color: #09091f; */
 }
 /* .canvas-div {
@@ -140,7 +139,7 @@ body
 }
 
 #explore-btn {
-  position: absolute;
+  position: fixed;
   border: none;
   bottom: 15%;
   left: 50%;
