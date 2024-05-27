@@ -256,8 +256,8 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
 import slicedVertexShader from './shaders/fanShader/vertexShader.glsl';
 import slicedFragmentShader from './shaders/fanShader/fragmentShader.glsl';
-import planeVertexShader from './shaders/planeShader/vertexShader.glsl';
-import planeFragmentShader from './shaders/planeShader/fragmentShader.glsl';
+// import planeVertexShader from './shaders/planeShader/vertexShader.glsl';
+// import planeFragmentShader from './shaders/planeShader/fragmentShader.glsl';
 
 
 
@@ -407,9 +407,9 @@ window.addEventListener('resize', () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     // Resize group based on viewport
-    const scaleFactor = Math.min(1.2, Math.max(0.5, window.innerWidth / 1280));
+    // const scaleFactor = Math.min(1.2, Math.max(0.5, window.innerWidth / 1280));
     // const scaleFactor = sizes.width / 1280; // Adjust this factor as needed
-    group.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    // group.scale.set(scaleFactor, scaleFactor, scaleFactor);
 });
 
 /**
