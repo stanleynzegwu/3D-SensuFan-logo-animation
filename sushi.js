@@ -321,15 +321,15 @@ const slicedMaterial = new CustomShaderMaterial({
 });
 
 //plane material
-const planeMaterial = new THREE.ShaderMaterial({
-    vertexShader: planeVertexShader,
-    fragmentShader: planeFragmentShader,
-    uniforms: {
-        uColorStart: { value: new THREE.Color(9 / 255, 9 / 255, 31 / 255) },
-        uProgression: {value: 1},
-    },
-    transparent:true
-})
+// const planeMaterial = new THREE.ShaderMaterial({
+//     vertexShader: planeVertexShader,
+//     fragmentShader: planeFragmentShader,
+//     uniforms: {
+//         uColorStart: { value: new THREE.Color(9 / 255, 9 / 255, 31 / 255) },
+//         uProgression: {value: 1},
+//     },
+//     transparent:true
+// })
 
 /** GROUP ***/
 const group = new THREE.Group();
@@ -422,10 +422,10 @@ scene.add(camera);
 /**
  * Background Plane
  */
-const bgGeometry = new THREE.PlaneGeometry(sizes.width/190, sizes.height/190);
-const bgMesh = new THREE.Mesh(bgGeometry, planeMaterial);
+// const bgGeometry = new THREE.PlaneGeometry(sizes.width/190, sizes.height/190);
+// const bgMesh = new THREE.Mesh(bgGeometry, planeMaterial);
 
-scene.add(bgMesh);
+// scene.add(bgMesh);
 
 /**
  * Renderer
