@@ -185,7 +185,7 @@ body
     outline: none;
 }
 
-#explore-btn {
+/* #explore-btn {
   position: fixed;
   border: none;
   bottom: 15%;
@@ -208,4 +208,4 @@ body
   opacity: 0;
   transition: all 0.5s ease, display 0s 0.5s;
   display: none;
-}
+} */
