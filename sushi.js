@@ -179,8 +179,9 @@ gltfLoader.load('/models/logo.glb', (gltf) => {
     // GSAP
     const timeline = gsap.timeline({
         onComplete: () => {
-            // Run opacity animation of exploreBtn
-            gsap.to(exploreBtn, { duration: 2, opacity: 1 });
+          // Run opacity animation of exploreBtn
+          gsap.to(exploreBtn, { duration: 0, display: 'block' });
+          gsap.to(exploreBtn, { duration: .5, opacity: 1 });
         }
     });
     timeline

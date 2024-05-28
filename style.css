@@ -144,6 +144,7 @@ body
   z-index: 50;
 }
 #explore-btn {
+  display: none;
   position: fixed;
   border: none;
   bottom: 15%;
@@ -159,7 +160,7 @@ body
   height: 2.9rem;
   width: 10rem;
   opacity: 0;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 #explore-btn:hover {
@@ -168,7 +169,7 @@ body
 
 .hidden {
   opacity: 0;
-  transition: all 0.5s ease, display 0s 0.5s;
+  transition: opacity 0.5s ease;
   display: none;
 }
 
